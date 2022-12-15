@@ -1,0 +1,18 @@
+#!/usr/bin/env python
+# commit-msg
+
+import re
+import sys
+
+# Collect the parameters
+commit_msg_filepath = sys.argv[1]
+
+with open(commit_msg_filepath, "r") as read_file:
+    content = read_file.read()
+    if not re.match(r"^y\d{4}d\d{1,2}p[1|2]: .+", content):
+        print("commit-msg: ERROR: The commit message must follow the following format:")
+        print("  yYYYYdDDpP: <commit message>")
+        print("  (Where YYYY is the year, DD is the day, and P the part number)")
+        print("  e.g.")
+        print("  y2022d12p2: Replace list with dict")
+        sys.exit(1)
