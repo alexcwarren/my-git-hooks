@@ -1,18 +1,28 @@
-#!/usr/bin/env python
+#! /usr/bin/env python
 # commit-msg
 
-import re
-import sys
+from re import match
+from sys import argv, exit
 
 # Collect the parameters
-commit_msg_filepath = sys.argv[1]
+commit_msg_filepath = argv[1]
 
 with open(commit_msg_filepath, "r") as read_file:
     content = read_file.read()
-    if not re.match(r"^y\d{4}d\d{1,2}p[1|2]: .+", content):
-        print("commit-msg: ERROR: The commit message must follow the following format:")
+    if not match(r"^y\d{4}d\d{1,2}p[1|2]: .+", content) and not match(
+        r"^ALL: .+$", content
+    ):
+        print(
+            "commit-msg: ERROR: "
+            + "The commit message must follow the following format:"
+        )
         print("  yYYYYdDDpP: <commit message>")
-        print("  (Where YYYY is the year, DD is the day, and P the part number)")
+        print(
+            "  (Where YYYY is the year, DD is the day, and P the part number)"
+        )
         print("  e.g.")
-        print("  y2022d12p2: Replace list with dict")
-        sys.exit(1)
+        print("  y2022d12p2: Replace list with dict\n")
+        print("Or if commit applies to whole repo (not just one day):")
+        print("  e.g.")
+        print("  ALL: <commit_message>")
+        exit(1)
